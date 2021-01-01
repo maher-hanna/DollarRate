@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أسعار الدولار</string>
+    <string name="price_label">سعر الدولار في دمشق:</string>
+    <string name="dollar_price">--</string>
+    <string name="message_error_price">حدث خطأ !</string>
+</resources>

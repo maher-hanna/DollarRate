@@ -1,0 +1,1 @@
+https://sp-today.com/app_api/cur_damascus.json
