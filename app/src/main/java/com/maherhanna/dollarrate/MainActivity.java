@@ -7,6 +7,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,12 +33,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
     String jsonDataSourceUrl;
     TextView tv_price;
+    DownloadPricesList downloadPricesList;
+    LineChart lineChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv_price = findViewById(R.id.tv_price);
+        lineChart = findViewById(R.id.lineChart);
 
 
     }
@@ -57,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 14);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.YEAR, 2021);
@@ -65,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 15);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
         calendar.set(Calendar.DAY_OF_MONTH, 2);
         calendar.set(Calendar.YEAR, 2021);
-        calendar.set(2021, 1, 2, 15, 0);
+
         Date to = calendar.getTime();
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -77,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         final String fromParam = dateFormat.format(from);
         final String toParam = dateFormat.format(to);
 
-        new DownloadPricesList() {
+        downloadPricesList =  new DownloadPricesList() {
             @Override
             protected void onPostExecute(String s) {
                 try {
-                    Map<Date, Float> priceList = new HashMap<>();
+                    List<Entry> priceList = new ArrayList<>();
                     JSONObject jsonResponse = new JSONObject(s);
                     Iterator<String> keysItr = jsonResponse.keys();
                     while (keysItr.hasNext()) {
@@ -89,30 +105,44 @@ public class MainActivity extends AppCompatActivity {
                         String value = jsonResponse.getString(key);
                         Date date = dateFormat.parse(key);
                         float price = Float.parseFloat(value);
-                        priceList.put(date, price);
-                        drawCurrentMonth(priceList);
+                        priceList.add(new Entry((float)date.getTime(),price));
+
+
                     }
+                    drawCurrentMonth(priceList);
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }.execute(fromParam, toParam);
+        };
+        downloadPricesList.execute(fromParam, toParam);
 
     }
 
-    private void drawCurrentMonth(Map<Date, Float> priceList) {
-        Set keys = priceList.keySet();
-        Iterator keysItr = keys.iterator();
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss");
+    private void drawCurrentMonth(List<Entry> priceList) {
+        LineDataSet lineDataSet = new LineDataSet(priceList,"lineDataSet");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet);
 
-        while (keysItr.hasNext()) {
-            Date date = (Date) keysItr.next();
-            float price = (float) priceList.get(date);
+        LineData data = new LineData(dataSets);
+        lineChart.setData(data);
+        lineChart.invalidate();
 
-            Log.d("prices", dateFormat.format(date) + " " + String.valueOf(price));
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(downloadPricesList != null){
+            if(downloadPricesList.isCancelled() != true){
+                downloadPricesList.cancel(true);
+            }
+
         }
+
     }
 
     class DownloadDollarPrice extends AsyncTask<String, String, String> {

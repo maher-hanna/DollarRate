@@ -34,14 +34,8 @@ class DownloadPricesList extends AsyncTask<String, Void, String> {
 
         String response = "";
         try {
-
-
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("from",fromParam)
-                    .appendQueryParameter("to",toParam);
-            String query = builder.build().getEncodedQuery();
-
-            URL url = new URL(databaseApiUrl + "?" + query);
+            URL url = new URL(databaseApiUrl + "?" + "from=" + fromParam
+            + "&to=" + toParam);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(8000);
             httpURLConnection.setRequestMethod("GET");
