@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -43,11 +44,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
-    String jsonDataSourceUrl;
+
     TextView tv_price;
     DownloadPricesList downloadPricesList;
     LineChart lineChart;
     DateTimeHelper dateTimeHelper;
+    DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         lineChart = findViewById(R.id.lineChart);
 
         dateTimeHelper = new DateTimeHelper();
+        dataBase = new DataBase();
 
 
     }
@@ -66,11 +69,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
-        jsonDataSourceUrl = "https://sp-today.com/app_api/cur_damascus.json";
         Date date = dateTimeHelper.getDateFromString("jijr");
 
-        new DownloadDollarPrice().execute(jsonDataSourceUrl);
+        new DownloadDollarPrice().execute(GolobalParameters.PriceNowUrl);
 
         getPrices();
 

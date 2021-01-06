@@ -25,7 +25,6 @@ class DownloadPricesList extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        final String databaseApiUrl = "https://maher802.000webhostapp.com/dollar_prices.php";
 
         final String fromParam = strings[0];
         final String toParam = strings[1];
@@ -34,7 +33,7 @@ class DownloadPricesList extends AsyncTask<String, Void, String> {
 
         String response = "";
         try {
-            URL url = new URL(databaseApiUrl + "?" + "from=" + fromParam
+            URL url = new URL(GolobalParameters.WebDatabaseUrl + "?" + "from=" + fromParam
             + "&to=" + toParam);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(8000);
