@@ -1,23 +1,12 @@
 package com.maherhanna.dollarrate;
 
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
 
 
 class DownloadPricesList extends AsyncTask<String, Void, String> {
@@ -33,7 +22,7 @@ class DownloadPricesList extends AsyncTask<String, Void, String> {
 
         String response = "";
         try {
-            URL url = new URL(GolobalParameters.WebDatabaseUrl + "?" + "from=" + fromParam
+            URL url = new URL(GlobalParameters.WebDatabaseUrl + "?" + "from=" + fromParam
             + "&to=" + toParam);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(8000);

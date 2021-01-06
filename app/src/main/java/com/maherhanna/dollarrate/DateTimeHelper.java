@@ -34,7 +34,7 @@ public class DateTimeHelper {
 
     }
 
-    public Date getDate(int year,int monthOfYear,int dayOfMonth,int hour24Format){
+    public static Date getDate(int year,int monthOfYear,int dayOfMonth,int hour24Format){
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
