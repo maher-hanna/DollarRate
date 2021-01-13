@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         lineChart = findViewById(R.id.lineChart);
 
         dateTimeHelper = new DateTimeHelper();
-        dataBase = new DataBase();
+        dataBase = new DataBase(this);
 
 
     }
@@ -58,47 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         dataBase.update();
 
-        getPrices();
-
-
+    }
+    public void databaseUpdated(){
+        drawCurrentMonth(dataBase.getStoredPrices(dateTimeHelper.getStartOfCurrentMonth(),new Date()));
     }
 
-    void getPrices() {
 
-        Date from = dateTimeHelper.getDate(2021,1,1,14);
-        
-        Date to = dateTimeHelper.getDate(2021,1,4,15);
-
-
-        final String fromParam = dateTimeHelper.getStringFromDate(from);
-        final String toParam = dateTimeHelper.getStringFromDate(to);
-
-        downloadPricesList =  new DownloadPricesList() {
-            @Override
-            protected void onPostExecute(String s) {
-                try {
-                    List<Entry> priceList = new ArrayList<>();
-                    JSONObject jsonResponse = new JSONObject(s);
-                    Iterator<String> keysItr = jsonResponse.keys();
-                    while (keysItr.hasNext()) {
-                        String key = keysItr.next();
-                        String value = jsonResponse.getString(key);
-                        Date date = dateTimeHelper.getDateFromString(key);
-                        float price = Float.parseFloat(value);
-                        priceList.add(new Entry((float)date.getTime(),price));
-
-
-                    }
-                    drawCurrentMonth(priceList);
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
-        downloadPricesList.execute(fromParam, toParam);
-
-    }
 
     private void drawCurrentMonth(List<Entry> priceList) {
         LineDataSet lineDataSet = new LineDataSet(priceList,"lineDataSet");
