@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -76,5 +77,10 @@ public class DateTimeHelper {
         calendar.set(Calendar.YEAR, year);
         Date result = calendar.getTime();
         return result;
+    }
+    public int getNumberOfDaysInMonth(Date month){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(month);
+        return calendar.getActualMaximum(calendar.DAY_OF_MONTH);
     }
 }

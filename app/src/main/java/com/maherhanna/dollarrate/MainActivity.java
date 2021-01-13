@@ -67,15 +67,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void drawCurrentMonth(List<Entry> priceList) {
         LineDataSet lineDataSet = new LineDataSet(priceList,"lineDataSet");
+
+        //Decorations
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.RED);
+        lineDataSet.setDrawCircles(false);
+
+        //
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
         final XAxis xAxis = lineChart.getXAxis();
+        
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                xAxis.setLabelCount(30,true);
+                xAxis.setLabelCount(dateTimeHelper.getNumberOfDaysInMonth(new Date()),true);
                 Date date = new Date((long)value);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
                 return simpleDateFormat.format(date);
