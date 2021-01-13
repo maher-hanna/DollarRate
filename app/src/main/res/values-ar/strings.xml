@@ -5,4 +5,5 @@
     <string name="dollar_price">--</string>
     <string name="message_error_price">حدث خطأ !</string>
     <string name="current_month_chart">الشهر الحالي</string>
+    <string name="damascus_price">سعر دمشق</string>
 </resources>

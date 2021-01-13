@@ -3,5 +3,6 @@
     <string name="price_label">Dollar price in Damascus:</string>
     <string name="dollar_price">--</string>
     <string name="message_error_price">Error!</string>
-    <string name="current_month_chart">"Current month"</string>
+    <string name="current_month_chart">Current month</string>
+    <string name="damascus_price">Damascus price</string>
 </resources>

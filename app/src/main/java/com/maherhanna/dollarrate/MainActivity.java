@@ -64,13 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void drawCurrentMonth(List<Entry> priceList) {
-        LineDataSet lineDataSet = new LineDataSet(priceList,getString(R.string.current_month_chart));
+        LineDataSet lineDataSet = new LineDataSet(priceList,getString(R.string.damascus_price));
 
         //Decorations
+        lineChart.getDescription().setText(getString(R.string.current_month_chart));
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getAxisRight().setEnabled(false);
+
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.RED);
         lineDataSet.setDrawCircles(false);
-        
+
+
         //
 
 
@@ -79,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
         final XAxis xAxis = lineChart.getXAxis();
         xAxis.setAxisMaximum((float)dateTimeHelper.getEndOfMonth(new Date()).getTime());
+        xAxis.setLabelCount(dateTimeHelper.getNumberOfDaysInMonth(new Date()),true);
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                xAxis.setLabelCount(dateTimeHelper.getNumberOfDaysInMonth(new Date()),true);
                 Date date = new Date((long)value);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
                 return simpleDateFormat.format(date);
