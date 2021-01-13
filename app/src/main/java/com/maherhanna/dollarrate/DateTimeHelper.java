@@ -58,9 +58,16 @@ public class DateTimeHelper {
         return result;
 
     }
-    Date getStartOfCurrentMonth(){
-        Calendar calendar = Calendar.getInstance();   // this takes current date
+    Date getStartOfMonth(Date month){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(month);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+    Date getEndOfMonth(Date month){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(month);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(calendar.DAY_OF_MONTH));
         return calendar.getTime();
     }
 

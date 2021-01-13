@@ -16,7 +16,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +24,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,25 +58,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void databaseUpdated(){
-        drawCurrentMonth(dataBase.getStoredPrices(dateTimeHelper.getStartOfCurrentMonth(),new Date()));
+        drawCurrentMonth(dataBase.getStoredPrices(dateTimeHelper.getStartOfMonth(new Date()),new Date()));
     }
 
 
 
     private void drawCurrentMonth(List<Entry> priceList) {
-        LineDataSet lineDataSet = new LineDataSet(priceList,"lineDataSet");
+        LineDataSet lineDataSet = new LineDataSet(priceList,getString(R.string.current_month_chart));
 
         //Decorations
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.RED);
         lineDataSet.setDrawCircles(false);
-
+        
         //
+
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
+
         final XAxis xAxis = lineChart.getXAxis();
-        
+        xAxis.setAxisMaximum((float)dateTimeHelper.getEndOfMonth(new Date()).getTime());
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
