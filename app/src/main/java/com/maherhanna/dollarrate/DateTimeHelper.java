@@ -88,6 +88,6 @@ public class DateTimeHelper {
     public int getNumberOfDaysInMonth(Date month){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(month);
-        return calendar.getActualMaximum(calendar.DAY_OF_MONTH);
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 }

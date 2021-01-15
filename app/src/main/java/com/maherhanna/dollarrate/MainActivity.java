@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         final XAxis xAxis = lineChart.getXAxis();
         xAxis.setAxisMaximum((float)dateTimeHelper.getEndOfMonth(new Date()).getTime());
-        xAxis.setLabelCount(dateTimeHelper.getNumberOfDaysInMonth(new Date()),true);
+        //xAxis.setLabelCount(dateTimeHelper.getNumberOfDaysInMonth(new Date()),true);
         xAxis.setValueFormatter(new IndexAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
