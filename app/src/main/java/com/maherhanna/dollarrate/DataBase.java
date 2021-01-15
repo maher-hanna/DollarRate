@@ -95,7 +95,7 @@ public class DataBase {
 
 
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    ((MainActivity)context).databaseUpdated();
                 }
             }
         };
