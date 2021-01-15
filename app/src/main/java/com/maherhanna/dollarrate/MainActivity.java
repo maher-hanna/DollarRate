@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillColor(Color.RED);
         lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawValues(false);
 
 
         //
@@ -156,7 +157,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String str) {
-            tv_price.setText(price);
+            if(str.isEmpty()){
+                tv_price.setTextColor(Color.RED);
+                tv_price.setText(getString(R.string.message_error_price));
+            }
+            else{
+                tv_price.setText(price);
+
+            }
             super.onPostExecute(str);
         }
 
